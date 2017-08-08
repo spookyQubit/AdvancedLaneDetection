@@ -33,7 +33,7 @@ The effect of undistortion can be seen in the figure below:
 ###
 
 ### Thresholding
-After undistorting the image, the next step in the pipeline is to detect only the lanes on the road. To acheive this purpose, we experimented with multiple thresholdings on the image:
+After undistorting the image, the next step in the pipeline is to detect only the lanes on the road. To acheive this purpose, I experimented with multiple thresholding techniques:
 * Sobel X thresholding
 * Sobel Y thresholding
 * Sobel direction thresholding
