@@ -7,10 +7,10 @@ The specific steps taken to accomplish this goal are:
 * Use color transforms and gradients to create a thresholded binary image.
 * Apply a perspective transform to get a "birds-eye view" of the binary image.
 * Detect lane pixels and fit a quadratic curve to find the lane boundary.
-* Determine the curvature of the left/right lanes 
-* Determine the vehicle position with respect to center.
+* Determine the curvature of the left/right lanes. 
+* Determine the vehicle position with respect to the center of the lane.
 * Stack the detected lane boundaries onto the original image.
-* Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+* Output a visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
 * Create a video where lane boundaries are marked using the pipeline created in the project. 
 
 [//]: # (Image References)
