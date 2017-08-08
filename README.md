@@ -25,7 +25,7 @@ The specific steps taken to accomplish this goal are:
 
 ### Camera calibration
 The code for calibrating camera images can be found in the [Camera class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/calibration.py). 
-The camera matrix and the distortion coefficients are calculated using the chessboard images provided in ./camera_cal directory. 
+The camera matrix and the distortion coefficients are calculated using the chessboard images provided in [camera caliberation directory](https://github.com/spookyQubit/AdvancedLaneDetection/tree/master/camera_cal). 
 Most important member function of this class is get_undistorted which takes in a distorted image and returns the undistorted version of the image.
 The effect of undistortion can be seen in the figure below:
 ![alt text][image1] 
@@ -40,27 +40,27 @@ After undistorting the image, the next step in the pipeline is to detect only th
 * Sobel direction thresholding
 * Sobel magnitude thresholding
 * HLS color thresholding
-All thresholding logics are implemented by an instance of the Threshold class implemented in "src/thresholding.py". Only Sobel X thresholding, Sobel Y thresholding and HLS color thresholding was used in the final part of the project. Although Masking class was developed to crop out region outside the lane lines, it was not used. Below is an example of a sample image with its corresponding thresholded counterpart. Note that particular attention is given to make the lane lines as distinctly visible as possible. 
+All thresholding logics are implemented by an instance of the [Threshold class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/threshold.py). Only Sobel X thresholding, Sobel Y thresholding and HLS color thresholding was used in the final part of the project. Although Masking class was developed to crop out region outside the lane lines, it was not used. Below is an example of a sample image with its corresponding thresholded counterpart. Note that particular attention is given to make the lane lines as distinctly visible as possible. 
 ![alt text][image2]
 
 --- 
 ###
 
 ### Perspective Transform
-In order to be able to find an appropriate fit to the lane lines, it is important to make a perspective transform of the images so that they appear parallel and not seem to taper off with distance. For this, we implemented the PerspectiveTransform class in "src/perspective_transform.py". This class performs a four point perspective transformation using cv2's getPerspectiveTransform funtionality to give us a bird's eye view of the image. An example of a throsholded image with its perspective transformed counterpart is shown below:
+In order to be able to find an appropriate fit to the lane lines, it is important to make a perspective transform of the images so that they appear parallel and not seem to taper off with distance. For this, we implemented the [PerspectiveTransform class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/perspective_transform.py). This class performs a four point perspective transformation using cv2's getPerspectiveTransform funtionality to give us a bird's eye view of the image. An example of a throsholded image with its perspective transformed counterpart is shown below:
 ![alt text][image3] 
 
 ---
 ###
 
 ### Lanes as Line instances
-We store the properties of the lane in instances of Line class implemented in "src/window_search.py". Creating this class helps us in keeping track of the polynomial fit and radius of curvature of the lanes.
+We store the properties of the lane in instances of [Line class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/line.py). Creating this class helps us in keeping track of the polynomial fit and radius of curvature of the lanes.
 
 ---
 ###
 
 ### Lane Pixels
-After we have the perspective transformed image, we then try to find all the pixels belonging to each of the lanes. For this, we wrote the WindowSearch class in "src/window_search.py". The most important function in the class is get_lanes, which takes an image as an argument and returns two Line instances, one for the left lane and the other for the right lane. 
+After we have the perspective transformed image, we then try to find all the pixels belonging to each of the lanes. For this, we wrote the [WindowSearch class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/window_search.py). The most important function in the class is get_lanes, which takes an image as an argument and returns two Line instances, one for the left lane and the other for the right lane. 
 
 ---
 ###
@@ -71,14 +71,14 @@ It is important to keep in mind the reality of the world in which the car is run
 * the radius of curvature of the lanes on the highway should not be too small
 * the fit of the lanes should not dramatically change within a small number of successive video frames 
 In order to implement these requirement (specially the last one), it is necessary to keep track of the history of the images which the car has seen. 
-All these road specific logics are implemented in the Road class in "src/road.py". 
+All these road specific logics are implemented in the [Road class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/road.py). 
 
 ---
 ###
 
 
 ### Main process image
-The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in Process class in "src/main.py". This is the function to which the VideoFileClip library passes each frame of the image. The final lane detected image superimposed on the original image with the lane stats is shown below:
+The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in [Process class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/main.py). This is the function to which the VideoFileClip library passes each frame of the image. The final lane detected image superimposed on the original image with the lane stats is shown below:
 ![alt text][image4] 
 
 ---
