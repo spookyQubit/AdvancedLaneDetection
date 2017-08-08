@@ -81,7 +81,7 @@ All these road-specific logics are implemented in the [Road class](https://githu
 The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in [Process class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/main.py). This is the function to which the VideoFileClip library passes each frame of the video. The final lane-detected image superimposed on the original image with the lane stats is shown below:
 ![alt text][image4] 
 
-The video that this pipeline yields can be found [here](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/project_video.mp4).
+The video that this pipeline yields can be found [here](https://www.youtube.com/watch?v=1TpBjy02p9Q).
 
 ---
 
