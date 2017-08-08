@@ -24,7 +24,7 @@ The specific steps taken to accomplish this goal are:
 ---
 
 ### Camera calibration
-The code for calibrating camera images can be found in the Camera class implemented in ./src/calibration.py. 
+The code for calibrating camera images can be found in the [Camera class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/calibration.py). 
 The camera matrix and the distortion coefficients are calculated using the chessboard images provided in ./camera_cal directory. 
 Most important member function of this class is get_undistorted which takes in a distorted image and returns the undistorted version of the image.
 The effect of undistortion can be seen in the figure below:
