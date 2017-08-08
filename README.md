@@ -39,7 +39,8 @@ After undistorting the image, the next step in the pipeline is to detect only th
 * Sobel direction thresholding
 * Sobel magnitude thresholding
 * HLS color thresholding
-All thresholding logics are implemented by an instance of the [Threshold class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/threshold.py). Only Sobel X thresholding, Sobel Y thresholding and HLS color thresholding was used in the final part of the project. Although Masking class was developed to crop out region outside the lane lines, it was not used. Below is an example of a sample image with its corresponding thresholded counterpart. Note that particular attention is given to make the lane lines as distinctly visible as possible. 
+
+All thresholding logics are implemented by an instance of the [Threshold class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/threshold.py). Only Sobel X thresholding, Sobel Y thresholding and HLS color thresholding was used in the final part of the project. Although Masking class was developed to crop out regions outside the lane lines, it was not used. Below is an example of a sample image with its corresponding thresholded counterpart. Note that particular attention is given to make the lane lines as distinctly visible as possible. 
 ![alt text][image2]
 
 --- 
