@@ -47,7 +47,7 @@ All thresholding logics are implemented by an instance of the [Threshold class](
 ###
 
 ### Perspective Transform
-In order to be able to find an appropriate fit to the lane lines, it is important to make a perspective transform of the images so that they appear parallel and not seem to taper off with distance. For this, we implemented the [PerspectiveTransform class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/perspective_transform.py). This class performs a four point perspective transformation using cv2's getPerspectiveTransform funtionality to give us a bird's eye view of the image. An example of a throsholded image with its perspective transformed counterpart is shown below:
+In order to be able to find an appropriate fit to the lane lines, it is important to make a perspective transform of the images so that the lanes appear parallel and not seem to taper off with distance. For this, we implemented the [PerspectiveTransform class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/perspective_transform.py). This class performs a four point perspective transformation using cv2's getPerspectiveTransform funtionality to give us a bird's eye view of the image. An example of a throsholded image with its perspective transformed counterpart is shown below:
 ![alt text][image3] 
 
 ---
