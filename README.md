@@ -81,9 +81,16 @@ All these road-specific logics are implemented in the [Road class](https://githu
 The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in [Process class](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/src/main.py). This is the function to which the VideoFileClip library passes each frame of the video. The final lane-detected image superimposed on the original image with the lane stats is shown below:
 ![alt text][image4] 
 
+The video that this pipeline yields can be found [here](https://github.com/spookyQubit/AdvancedLaneDetection/blob/master/project_video.mp4).
+
 ---
+
 ###
 
 ### Conclusion
-The project was a great introduction to techniques used in computer vision specially for the purpose of lane detection. The pipeline performed really well on the project video. One thing which really helped was to keep track of previous lanes and smoothing the current lane based on previously seen ones. Also, it was  	 
+
+The project was great in introducing me to computer vision techniques, especially in the area of lane detection. The pipeline performed well on the project video. Two things which really helped were: 1) having a sanity check to discard potentially incorrectly detected lanes 2) applying smooting by keeping track of the history of the lane statistics. If these two steps are not applied, the performance worsens drastically. 
+
+There are many ways in which the project can still be improved. In particular, I perform a full window search for each image instead of using the information from previous images to detect lane boundaries. Implementing a history based lane detection can reduce the processing time. 
+
 ###
