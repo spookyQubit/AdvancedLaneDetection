@@ -19,6 +19,7 @@ The specific steps taken to accomplish this goal are:
 [image1]: ./src/output_images/camera_calibration_combined.jpg "Undistorted"
 [image2]: ./src/output_images/thresholded_image_combined.jpg "Thresholded"
 [image3]: ./src/output_images/perspective_combined.jpg "Perspective"
+
 ---
 
 ### Camera calibration
