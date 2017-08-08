@@ -1,5 +1,4 @@
-				## Advanced Lane Finding
-####
+###
 The goal of the project is to use techniques in computer vision to create a pipeline which can identify the boundaries of the road lanes on which a car is moving. 
 The input to the pipeline is a stream of images which are taken by a single camera mounted at the middle of the car. 
 The specific steps taken to accomplish this goal are: 
@@ -22,8 +21,8 @@ The specific steps taken to accomplish this goal are:
 ---
 
 ### Camera calibration
-The code for calibrating camera images can be found in the Camera class implemented in "src/calibration.py". 
-The camera matrix and the distortion coefficients are calculated using the chessboard images provided in "./camera_cal" directory. 
+The code for calibrating camera images can be found in the Camera class implemented in ./src/calibration.py. 
+The camera matrix and the distortion coefficients are calculated using the chessboard images provided in ./camera_cal directory. 
 Most important member function of this class is get_undistorted which takes in a distorted image and returns the undistorted version of the image.
 The effect of undistortion can be seen in the figure below:
 ![alt text][image1] 
