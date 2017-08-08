@@ -1,7 +1,6 @@
-# **Finding Lane Lines on the Road** 
+# **Finding Road Lane** 
 
-The goal of the project is to use techniques in computer vision to create a pipeline which can identify the boundaries of the road lanes on which a car is moving. 
-The input to the pipeline is a stream of images which are taken by a single camera mounted at the middle of the car. 
+The goal of the project is to use techniques in computer vision to create a pipeline which can identify the boundaries of the road lanes. The input to the pipeline is a stream of images which are taken by a single camera mounted at the center of the car. 
 The specific steps taken to accomplish this goal are: 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
