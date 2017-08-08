@@ -19,6 +19,7 @@ The specific steps taken to accomplish this goal are:
 [image1]: ./src/output_images/camera_calibration_combined.jpg "Undistorted"
 [image2]: ./src/output_images/thresholded_image_combined.jpg "Thresholded"
 [image3]: ./src/output_images/perspective_combined.jpg "Perspective"
+[image4]: ./src/output_images/road_stats.jpg "RoadStats"
 
 ---
 
@@ -77,7 +78,10 @@ All these road specific logics are implemented in the Road class in "src/road.py
 
 
 ### Main process image
-The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in Process class in "src/main.py". This is the function to which the VideoFileClip library passes each frame of the image.  
+The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in Process class in "src/main.py". This is the function to which the VideoFileClip library passes each frame of the image. The final lane detected image superimposed on the original image with the lane stats is shown below:
+![alt text][image4] 
+
+---
 ###
 
 ### Conclusion
