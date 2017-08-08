@@ -1,127 +1,89 @@
-## Writeup Template
+# **Finding Lane Lines on the Road** 
 
-### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Advanced Lane Finding Project**
-
-The goals / steps of this project are the following:
-
+The goal of the project is to use techniques in computer vision to create a pipeline which can identify the boundaries of the road lanes on which a car is moving. 
+The input to the pipeline is a stream of images which are taken by a single camera mounted at the middle of the car. 
+The specific steps taken to accomplish this goal are: 
 * Compute the camera calibration matrix and distortion coefficients given a set of chessboard images.
 * Apply a distortion correction to raw images.
-* Use color transforms, gradients, etc., to create a thresholded binary image.
-* Apply a perspective transform to rectify binary image ("birds-eye view").
-* Detect lane pixels and fit to find the lane boundary.
-* Determine the curvature of the lane and vehicle position with respect to center.
-* Warp the detected lane boundaries back onto the original image.
+* Use color transforms and gradients to create a thresholded binary image.
+* Apply a perspective transform to get a "birds-eye view" of the binary image.
+* Detect lane pixels and fit a quadratic curve to find the lane boundary.
+* Determine the curvature of the left/right lanes 
+* Determine the vehicle position with respect to center.
+* Stack the detected lane boundaries onto the original image.
 * Output visual display of the lane boundaries and numerical estimation of lane curvature and vehicle position.
+* Create a video where lane boundaries are marked using the pipeline created in the project. 
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
-
-## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
-
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
+[image1]: ./src/output_images/camera_calibration_combined.jpg "Undistorted"
+[image2]: ./src/output_images/thresholded_image_combined.jpg "Thresholded"
+[image3]: ./src/output_images/perspective_combined.jpg "Perspective"
+[image4]: ./src/output_images/road_stats.jpg "RoadStats"
 
 ---
 
-### Writeup / README
+### Camera calibration
+The code for calibrating camera images can be found in the Camera class implemented in ./src/calibration.py. 
+The camera matrix and the distortion coefficients are calculated using the chessboard images provided in ./camera_cal directory. 
+Most important member function of this class is get_undistorted which takes in a distorted image and returns the undistorted version of the image.
+The effect of undistortion can be seen in the figure below:
+![alt text][image1] 
 
-#### 1. Provide a Writeup / README that includes all the rubric points and how you addressed each one.  You can submit your writeup as markdown or pdf.  [Here](https://github.com/udacity/CarND-Advanced-Lane-Lines/blob/master/writeup_template.md) is a template writeup for this project you can use as a guide and a starting point.  
+---
+###
 
-You're reading it!
-
-### Camera Calibration
-
-#### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
-
-The code for this step is contained in the first code cell of the IPython notebook located in "./examples/example.ipynb" (or in lines # through # of the file called `some_file.py`).  
-
-I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
-
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
-
-![alt text][image1]
-
-### Pipeline (single images)
-
-#### 1. Provide an example of a distortion-corrected image.
-
-To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
+### Thresholding
+After undistorting the image, the next step in the pipeline is to detect only the lanes on the road. To acheive this purpose, we experimented with multiple thresholdings on the image:
+* Sobel X thresholding
+* Sobel Y thresholding
+* Sobel direction thresholding
+* Sobel magnitude thresholding
+* HLS color thresholding
+All thresholding logics are implemented by an instance of the Threshold class implemented in "src/thresholding.py". Only Sobel X thresholding, Sobel Y thresholding and HLS color thresholding was used in the final part of the project. Although Masking class was developed to crop out region outside the lane lines, it was not used. Below is an example of a sample image with its corresponding thresholded counterpart. Note that particular attention is given to make the lane lines as distinctly visible as possible. 
 ![alt text][image2]
 
-#### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
+--- 
+###
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at lines # through # in `another_file.py`).  Here's an example of my output for this step.  (note: this is not actually from one of the test images)
-
-![alt text][image3]
-
-#### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
-
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
-
-```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
-```
-
-This resulted in the following source and destination points:
-
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
-
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
-
-![alt text][image4]
-
-#### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
-
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
-
-![alt text][image5]
-
-#### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
-
-I did this in lines # through # in my code in `my_other_file.py`
-
-#### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
-
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
-
-![alt text][image6]
+### Perspective Transform
+In order to be able to find an appropriate fit to the lane lines, it is important to make a perspective transform of the images so that they appear parallel and not seem to taper off with distance. For this, we implemented the PerspectiveTransform class in "src/perspective_transform.py". This class performs a four point perspective transformation using cv2's getPerspectiveTransform funtionality to give us a bird's eye view of the image. An example of a throsholded image with its perspective transformed counterpart is shown below:
+![alt text][image3] 
 
 ---
+###
 
-### Pipeline (video)
-
-#### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
-
-Here's a [link to my video result](./project_video.mp4)
+### Lanes as Line instances
+We store the properties of the lane in instances of Line class implemented in "src/window_search.py". Creating this class helps us in keeping track of the polynomial fit and radius of curvature of the lanes.
 
 ---
+###
 
-### Discussion
+### Lane Pixels
+After we have the perspective transformed image, we then try to find all the pixels belonging to each of the lanes. For this, we wrote the WindowSearch class in "src/window_search.py". The most important function in the class is get_lanes, which takes an image as an argument and returns two Line instances, one for the left lane and the other for the right lane. 
 
-#### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
+---
+###
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+### Road sanity 
+It is important to keep in mind the reality of the world in which the car is running and any pipeline which models the lanes on a roads should ensure that the model is consistant with that reality. Some of the crucial checks are
+* the two lanes should be nearly parallel to each other
+* the radius of curvature of the lanes on the highway should not be too small
+* the fit of the lanes should not dramatically change within a small number of successive video frames 
+In order to implement these requirement (specially the last one), it is necessary to keep track of the history of the images which the car has seen. 
+All these road specific logics are implemented in the Road class in "src/road.py". 
+
+---
+###
+
+
+### Main process image
+The heart of the project, the entry point to the entire pipeline, is the process_image function implemented in Process class in "src/main.py". This is the function to which the VideoFileClip library passes each frame of the image. The final lane detected image superimposed on the original image with the lane stats is shown below:
+![alt text][image4] 
+
+---
+###
+
+### Conclusion
+The project was a great introduction to techniques used in computer vision specially for the purpose of lane detection. The pipeline performed really well on the project video. One thing which really helped was to keep track of previous lanes and smoothing the current lane based on previously seen ones. Also, it was  	 
+###
